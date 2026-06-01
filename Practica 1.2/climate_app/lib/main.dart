@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Climate App',
+      title: 'Mi primera App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         useMaterial3: true,
@@ -27,7 +27,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Clima Actual'),
+        title: const Text('Clima de Ahualulco'),
         centerTitle: true,
       ),
       body: Center(
@@ -44,7 +44,7 @@ class MyHomePage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             const Text(
-              'Santiago de Querétaro',
+              'Santiago de anaya, Querétaro',
               style: TextStyle(
                 fontSize: 24,
                 color: Colors.grey,
