@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'detail_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -9,20 +8,21 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final List<String> cities = ['Santiago', 'Querétaro', 'México'];
-  List<String> filtered = [];
-  final TextEditingController _controller = TextEditingController();
+  String searchQuery = '';
+  final List<String> cities = ['Santiago', 'Querétaro', 'México', 'Guadalajara'];
+  List<String> filteredCities = [];
 
   @override
   void initState() {
     super.initState();
-    filtered = cities; // Al inicio muestra todas
+    filteredCities = cities;
   }
 
   void filterCities(String query) {
     setState(() {
-      filtered = cities
-          .where((c) => c.toLowerCase().contains(query.toLowerCase()))
+      searchQuery = query;
+      filteredCities = cities
+          .where((city) => city.toLowerCase().contains(query.toLowerCase()))
           .toList();
     });
   }
@@ -30,50 +30,32 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Buscar Ciudades'),
-      ),
+      appBar: AppBar(title: const Text('Buscar Ciudades')),
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextField(
-              controller: _controller,
               onChanged: filterCities,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Busca una ciudad...',
-                prefixIcon: const Icon(Icons.location_city),
-                suffixIcon: _controller.text.isNotEmpty 
-                    ? IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          _controller.clear();
-                          filterCities('');
-                        },
-                      )
-                    : null,
-                border: const OutlineInputBorder(),
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.search),
               ),
             ),
           ),
           Expanded(
-            child: filtered.isEmpty
-                ? const Center(child: Text('No se encontraron ciudades'))
+            child: filteredCities.isEmpty
+                ? const Center(child: Text('No encontradas'))
                 : ListView.builder(
-                    itemCount: filtered.length,
+                    itemCount: filteredCities.length,
                     itemBuilder: (context, index) {
-                      final city = filtered[index];
                       return ListTile(
-                        title: Text(city),
-                        subtitle: const Text('Ver pronóstico'),
-                        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                        title: Text(filteredCities[index]),
+                        trailing: const Icon(Icons.subdirectory_arrow_left),
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailScreen(city: city),
-                            ),
-                          );
+                          // Regresa la ciudad seleccionada a la pantalla anterior
+                          Navigator.pop(context, filteredCities[index]);
                         },
                       );
                     },
